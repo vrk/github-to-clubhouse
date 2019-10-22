@@ -2,6 +2,12 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 
 try {
+  main();
+} catch (error) {
+  core.setFailed(error.message);
+}
+
+async function main() {
   const githubRepoToken = core.getInput('github-repo-token');
   const clubhouseToken = core.getInput('clubhouse-token');
   const clubhouseProject = core.getInput('clubhouse-project-id');
@@ -10,22 +16,21 @@ try {
   const { payload } = github.context;
   const { issue, action } = payload;
   const payloadString = JSON.stringify(payload, undefined, 2)
-  console.log(`The event payload: ${payloadString}`);
+  console.log(`The event payload ! ${payloadString}`);
 
   if (action !== 'opened' && action !== 'reopened') {
     throw new Error('This action should only be performed on opened and reopened issues.')
   }
   const client = new github.GitHub(githubRepoToken);
-  closeIssue(client, issue);
+  await closeIssue(client, issue);
 
   // If it's a new issues, file it in Clubhouse.
   if (action === 'opened') {
     console.log('need to import this to clubhouse....')
-    importIssueToClubhouse(clubhouseToken, clubhouseProject, issue);
+    await importIssueToClubhouse(clubhouseToken, clubhouseProject, issue);
+  } else {
+    console.log('import not needed for ', action)
   }
-
-} catch (error) {
-  core.setFailed(error.message);
 }
 
 async function closeIssue(client, issue) {
