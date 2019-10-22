@@ -2,15 +2,54 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 
 try {
-  // `who-to-greet` input defined in action metadata file
-  const nameToGreet = core.getInput('who-to-greet');
-  console.log(`Hello ${nameToGreet}!`);
-  const time = (new Date()).toTimeString();
-  core.setOutput("time", time);
+  const githubRepoToken = core.getInput('github-repo-token');
+  const clubhouseToken = core.getInput('clubhouse-token');
+  const clubhouseProject = core.getInput('clubhouse-project-id');
+
   // Get the JSON webhook payload for the event that triggered the workflow
-  const payload = JSON.stringify(github.context.payload, undefined, 2)
-  console.log(`The event payload: ${payload}`);
+  const { payload } = github.context;
+  const { issue, action } = payload;
+  const payloadString = JSON.stringify(payload, undefined, 2)
+  console.log(`The event payload: ${payloadString}`);
+
+  if (action !== 'opened' && action !== 'reopened') {
+    throw new Error('This action should only be performed on opened and reopened issues.')
+  }
+  const client = new github.GitHub(githubRepoToken);
+  closeIssue(client, issue);
+
+  // If it's a new issues, file it in Clubhouse.
+  if (action === 'opened') {
+    // importIssueToClubhouse(clubhouseToken, clubhouseProject, issue);
+  }
+
 } catch (error) {
   core.setFailed(error.message);
 }
+
+async function closeIssue(client, issue) {
+  core.debug(`closing issue`);
+  client.issues.update({
+    owner: github.context.repo.owner,
+    repo: github.context.repo.repo,
+    issue_number: issue.number,
+    state: 'closed'
+  });
+
+}
+
+async function importIssueToClubhouse(clubhouseToken, clubhouseProject, issue) {
+  const clubhouse = Clubhouse.create(clubhouseToken)
+  const { created_at, updated_at, title, body, html_url } = issue;
+  const project = await clubhouse.getProject(clubhouseProject);
+  await clubhouse.createStory({
+    created_at, updated_at,
+    story_type,
+    name: title,
+    description: body,
+    external_id: html_url,
+    project_id: project.id,
+  });
+}
+
 

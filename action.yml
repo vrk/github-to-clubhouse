@@ -1,13 +1,13 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'GitHub to Clubhouse'
+description: 'Close the GitHub issue and post it to Clubhouse'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  github-repo-token:
+    description: 'Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
     required: true
-    default: 'World'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  clubhouse-token:
+    description: 'Token to use Clubhouse API'
+  clubhouse-project-id:
+    description: 'The ID of the project whose issue will be made in Clubhouse'
 runs:
   using: 'node12'
   main: 'index.js'
