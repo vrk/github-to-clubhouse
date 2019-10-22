@@ -9,7 +9,7 @@ jobs:
     steps:
     - name: Close new issues
       id: hello
-      uses: vrk/github-to-clubhouse@v1.6
+      uses: vrk/github-to-clubhouse@v1.7
       with:
         github-repo-token: ${{ secrets.GITHUB_TOKEN }}
         clubhouse-token: ${{ secrets.CLUBHOUSE_TOKEN }}
