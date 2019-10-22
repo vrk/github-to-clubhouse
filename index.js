@@ -58,7 +58,7 @@ async function importIssueToClubhouse(clubhouseToken, clubhouseProject, issue) {
     name: title,
     description: body,
     external_id: html_url,
-    project_id: 50,
+    project_id: project.id,
   });
 }
 
