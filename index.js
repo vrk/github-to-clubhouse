@@ -20,7 +20,8 @@ try {
 
   // If it's a new issues, file it in Clubhouse.
   if (action === 'opened') {
-    // importIssueToClubhouse(clubhouseToken, clubhouseProject, issue);
+    console.log('need to import this to clubhouse....')
+    importIssueToClubhouse(clubhouseToken, clubhouseProject, issue);
   }
 
 } catch (error) {
@@ -42,6 +43,7 @@ async function importIssueToClubhouse(clubhouseToken, clubhouseProject, issue) {
   const clubhouse = Clubhouse.create(clubhouseToken)
   const { created_at, updated_at, title, body, html_url } = issue;
   const project = await clubhouse.getProject(clubhouseProject);
+  console.log(`adding to project ${project.id}`);
   await clubhouse.createStory({
     created_at, updated_at,
     story_type,

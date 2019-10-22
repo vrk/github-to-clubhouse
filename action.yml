@@ -6,8 +6,10 @@ inputs:
     required: true
   clubhouse-token:
     description: 'Token to use Clubhouse API'
+    required: true
   clubhouse-project-id:
     description: 'The ID of the project whose issue will be made in Clubhouse'
+    required: true
 runs:
   using: 'node12'
   main: 'index.js'
