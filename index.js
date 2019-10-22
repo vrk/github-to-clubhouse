@@ -50,14 +50,21 @@ async function importIssueToClubhouse(clubhouseToken, clubhouseProject, issue) {
   const { created_at, updated_at, title, body, html_url } = issue;
   const project = await clubhouse.getProject(clubhouseProject);
   console.log(`adding to project ${project.id}`);
+  const story_type = getStoryType(labels);
   await clubhouse.createStory({
     created_at, updated_at,
     story_type,
     name: title,
     description: body,
     external_id: html_url,
-    project_id: project.id,
+    project_id: 50,
   });
+}
+
+function getStoryType(labels) {
+  if (labels.find(label => label.name.includes('bug'))) return 'bug'
+  if (labels.find(label => label.name.includes('chore'))) return 'chore'
+  return 'feature'
 }
 
 
