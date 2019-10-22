@@ -47,8 +47,9 @@ async function closeIssue(client, issue) {
 
 async function importIssueToClubhouse(clubhouseToken, clubhouseProject, issue) {
   const clubhouse = Clubhouse.create(clubhouseToken)
-  const { created_at, updated_at, title, body, html_url } = issue;
+  const { created_at, updated_at, labels, title, body, html_url } = issue;
   const project = await clubhouse.getProject(clubhouseProject);
+  console.log(JSON.stringify(project));
   console.log(`adding to project ${project.id}`);
   const story_type = getStoryType(labels);
   await clubhouse.createStory({
