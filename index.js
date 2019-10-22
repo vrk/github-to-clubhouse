@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
+const Clubhouse = require('clubhouse-lib');
 
 try {
   main();
