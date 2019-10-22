@@ -1,0 +1,24 @@
+{
+  "name": "github-to-clubhouse",
+  "version": "1.0.0",
+  "description": "playing around",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vrk/github-to-clubhouse.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vrk/github-to-clubhouse/issues"
+  },
+  "homepage": "https://github.com/vrk/github-to-clubhouse#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.0",
+    "@actions/github": "^1.1.0"
+  }
+}
