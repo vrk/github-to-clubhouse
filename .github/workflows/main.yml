@@ -1,15 +1,19 @@
-on: [push]
+on:
+  issues:
+    types: [opened, reopened]
 
 jobs:
-  hello_world_job:
+  close_and_import_job:
     runs-on: ubuntu-latest
-    name: A job to say hello
+    name: A job to close issues and import them to clubhouse 
     steps:
-    - name: Hello world action step
+    - name: Close new issues
       id: hello
       uses: vrk/github-to-clubhouse@v1
       with:
-        who-to-greet: 'vrk'
+        github-repo-token: ${{ secrets.GITHUB_TOKEN }}
+        clubhouse-token: ${{ secrets.CLUBHOUSE_TOKEN }}
+        clubhouse-project-id: ${{ secrets.CLUBHOUSE_PROJECT_ID }}
     # Use the output from the `hello` step
     - name: Get the output time
       run: echo "The time was ${{ steps.hello.outputs.time }}"
